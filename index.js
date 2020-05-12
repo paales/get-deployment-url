@@ -33,7 +33,9 @@ async function run() {
     token = getInput("token", { required: true });
     octokit = new GitHub(token);
     [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-    branch = process.env.GITHUB_REF.match(/(?<=refs\/heads\/).+/g)[0];
+    branch = process.env.GITHUB_HEAD_REF
+      ? process.env.GITHUB_HEAD_REF
+      : process.env.GITHUB_REF.match(/(?<=refs\/heads\/).+/g)[0];
     retryInterval = getInput("retryInterval");
 
     console.log("Starting to run with following input:", {
